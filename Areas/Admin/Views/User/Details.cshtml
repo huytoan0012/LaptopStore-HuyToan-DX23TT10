@@ -1,0 +1,135 @@
+@model LaptopStore.ViewModels.UserViewModel
+
+@{
+    ViewData["Title"] = "Chi tiết người dùng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="fas fa-user-circle"></i> Chi tiết người dùng</h1>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Quay lại
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-info-circle"></i> Thông tin cơ bản</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">ID</dt>
+                        <dd class="col-sm-8">@Model.Id</dd>
+
+                        <dt class="col-sm-4">Email</dt>
+                        <dd class="col-sm-8">@Model.Email</dd>
+
+                        <dt class="col-sm-4">Tên đăng nhập</dt>
+                        <dd class="col-sm-8">@Model.UserName</dd>
+
+                        <dt class="col-sm-4">Số điện thoại</dt>
+                        <dd class="col-sm-8">@(string.IsNullOrEmpty(Model.PhoneNumber) ? "Chưa cập nhật" : Model.PhoneNumber)</dd>
+
+                        <dt class="col-sm-4">Xác nhận email</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.EmailConfirmed)
+                            {
+                                <span class="badge bg-success">✅ Đã xác nhận</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning">⚠️ Chưa xác nhận</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-4">Trạng thái</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-@Model.StatusColor fs-6">@Model.Status</span>
+                        </dd>
+
+                        @if (Model.IsLockedOut)
+                        {
+                            <dt class="col-sm-4">Thời gian khóa</dt>
+                            <dd class="col-sm-8">@Model.LockoutEnd?.LocalDateTime.ToString("dd/MM/yyyy HH:mm")</dd>
+                        }
+
+                        <dt class="col-sm-4">Vai trò</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.IsAdmin)
+                            {
+                                <span class="badge bg-danger"><i class="fas fa-crown"></i> Admin</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-info">User</span>
+                            }
+                            @foreach (var role in Model.Roles.Where(r => r != "User" && r != "Admin"))
+                            {
+                                <span class="badge bg-secondary">@role</span>
+                            }
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-cog"></i> Quản lý tài khoản</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        @if (Model.IsLockedOut)
+                        {
+                            <form asp-action="Unlock" method="post">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <button type="submit" class="btn btn-success w-100">
+                                    <i class="fas fa-unlock"></i> Mở khóa tài khoản
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-action="Lock" method="post">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <button type="submit" class="btn btn-warning w-100">
+                                    <i class="fas fa-lock"></i> Khóa tài khoản
+                                </button>
+                            </form>
+                        }
+
+                        @if (Model.IsAdmin)
+                        {
+                            <a asp-action="RemoveAdmin" asp-route-id="@Model.Id" class="btn btn-secondary" onclick="return confirm('Bạn có chắc muốn xóa quyền Admin?')">
+                                <i class="fas fa-user"></i> Xóa quyền Admin
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-action="MakeAdmin" asp-route-id="@Model.Id" class="btn btn-danger" onclick="return confirm('Bạn có chắc muốn gán quyền Admin?')">
+                                <i class="fas fa-crown"></i> Gán quyền Admin
+                            </a>
+                        }
+
+                        @if (!Model.IsAdmin)
+                        {
+                            <form asp-action="Delete" method="post" onsubmit="return confirm('Bạn có chắc muốn xóa tài khoản @Model.Email?')">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <button type="submit" class="btn btn-danger w-100">
+                                    <i class="fas fa-trash"></i> Xóa tài khoản
+                                </button>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

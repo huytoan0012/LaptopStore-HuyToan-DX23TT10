@@ -1,0 +1,104 @@
+@model LaptopStore.Models.Product
+
+@{
+    ViewData["Title"] = "Thêm sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var brands = ViewBag.Brands as List<LaptopStore.Models.Brand>;
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Thêm sản phẩm mới</h1>
+        <a href="/Admin/Product" class="btn btn-secondary">Quay lại</a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <div class="card">
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data" action="/Admin/Product/Create">
+                @Html.AntiForgeryToken()
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Tên sản phẩm -->
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label">Tên sản phẩm <span class="text-danger">*</span></label>
+                            <input asp-for="Name" name="Name" id="Name" class="form-control" required />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <!-- Hãng sản xuất -->
+                        <div class="mb-3">
+                            <label asp-for="BrandId" class="form-label">Hãng sản xuất <span class="text-danger">*</span></label>
+                            <select asp-for="BrandId" name="BrandId" id="BrandId" class="form-select" required>
+                                <option value="">-- Chọn hãng --</option>
+                                @if (brands != null)
+                                {
+                                    @foreach (var brand in brands)
+                                    {
+                                        <option value="@brand.Id">@brand.Name</option>
+                                    }
+                                }
+                            </select>
+                            <span asp-validation-for="BrandId" class="text-danger"></span>
+                        </div>
+
+                        <!-- Giá -->
+                        <div class="mb-3">
+                            <label asp-for="Price" class="form-label">Giá (VNĐ) <span class="text-danger">*</span></label>
+                            <input asp-for="Price" name="Price" id="Price" class="form-control" type="number" required />
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+
+                        <!-- Số lượng tồn kho -->
+                        <div class="mb-3">
+                            <label asp-for="StockQuantity" class="form-label">Số lượng tồn kho <span class="text-danger">*</span></label>
+                            <input asp-for="StockQuantity" name="StockQuantity" id="StockQuantity" class="form-control" type="number" required />
+                            <span asp-validation-for="StockQuantity" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <!-- Ảnh -->
+                        <div class="mb-3">
+                            <label class="form-label">Ảnh sản phẩm</label>
+                            <input type="file" name="imageFile" id="imageFile" class="form-control" accept="image/*" />
+                        </div>
+
+                        <!-- Thông số -->
+                        <div class="mb-3">
+                            <label asp-for="Specs" class="form-label">Thông số kỹ thuật</label>
+                            <textarea asp-for="Specs" name="Specs" id="Specs" class="form-control" rows="3" placeholder="VD: CPU: Intel i7 | RAM: 16GB"></textarea>
+                            <span asp-validation-for="Specs" class="text-danger"></span>
+                        </div>
+
+                        <!-- Mô tả -->
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label">Mô tả</label>
+                            <textarea asp-for="Description" name="Description" id="Description" class="form-control" rows="3" placeholder="Mô tả chi tiết sản phẩm..."></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-primary">Lưu sản phẩm</button>
+                    <a href="/Admin/Product" class="btn btn-secondary">Hủy</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Admin LaptopStore</title>
+
+    <!-- Bootstrap 5 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <style>
+        /* ===== CẤU HÌNH CHUNG ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f8f9fc;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* ===== TOP NAVBAR ===== */
+        .navbar-admin {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 12px 24px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1050;
+        }
+
+        .navbar-admin .navbar-brand {
+            color: white !important;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
+        .navbar-admin .navbar-brand i {
+            margin-right: 10px;
+        }
+
+        .navbar-admin .nav-link {
+            color: rgba(255, 255, 255, 0.85) !important;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-admin .nav-link:hover {
+            color: white !important;
+        }
+
+        .navbar-admin .btn-logout {
+            color: rgba(255, 255, 255, 0.85) !important;
+            background: transparent;
+            border: none;
+            padding: 8px 16px;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-admin .btn-logout:hover {
+            color: white !important;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar-wrapper {
+            min-height: calc(100vh - 72px);
+            background: white;
+            border-right: 1px solid #e3e6f0;
+            padding: 20px 0;
+            position: sticky;
+            top: 72px;
+            height: calc(100vh - 72px);
+            overflow-y: auto;
+        }
+
+        .sidebar-wrapper .nav-link {
+            color: #5a5c69;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin: 4px 12px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar-wrapper .nav-link i {
+            width: 28px;
+            font-size: 1.1rem;
+            text-align: center;
+            margin-right: 10px;
+        }
+
+        .sidebar-wrapper .nav-link:hover {
+            background: #eaecf4;
+            color: #4e73df;
+        }
+
+        .sidebar-wrapper .nav-link.active {
+            background: #4e73df;
+            color: white;
+            box-shadow: 0 4px 12px rgba(78, 115, 223, 0.3);
+        }
+
+        .sidebar-wrapper .nav-link.active i {
+            color: white;
+        }
+
+        .sidebar-wrapper .nav-header {
+            padding: 12px 24px 8px 24px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: #b7b9cc;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-wrapper .nav-divider {
+            height: 1px;
+            background: #eaecf4;
+            margin: 8px 12px;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            padding: 24px 32px;
+            background: #f8f9fc;
+            min-height: calc(100vh - 72px);
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0.25rem 2rem 0 rgba(58, 59, 69, 0.15);
+        }
+
+        .card-header {
+            background: transparent;
+            border-bottom: 1px solid #eaecf4;
+            font-weight: 600;
+            padding: 16px 24px;
+        }
+
+        .card-body {
+            padding: 20px 24px;
+        }
+
+        /* ===== BORDER LEFT (Dashboard Stats) ===== */
+        .border-left-primary {
+            border-left: 0.25rem solid #4e73df !important;
+        }
+        .border-left-success {
+            border-left: 0.25rem solid #1cc88a !important;
+        }
+        .border-left-info {
+            border-left: 0.25rem solid #36b9cc !important;
+        }
+        .border-left-warning {
+            border-left: 0.25rem solid #f6c23e !important;
+        }
+        .border-left-danger {
+            border-left: 0.25rem solid #e74a3b !important;
+        }
+
+        .text-xs {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .text-gray-300 {
+            color: #dddfeb;
+        }
+        .text-gray-800 {
+            color: #5a5c69;
+        }
+
+        /* ===== TABLES ===== */
+        .table th {
+            border-top: none;
+            font-weight: 600;
+            color: #5a5c69;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #f8f9fc;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @@media (max-width: 767.98px) {
+            .sidebar-wrapper {
+                min-height: auto;
+                height: auto;
+                position: relative;
+                top: 0;
+                border-right: none;
+                border-bottom: 1px solid #e3e6f0;
+            }
+
+            .main-content {
+                padding: 16px;
+            }
+
+            .navbar-admin {
+                padding: 8px 16px;
+            }
+        }
+
+        /* ===== SCROLLBAR ===== */
+        .sidebar-wrapper::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar-wrapper::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar-wrapper::-webkit-scrollbar-thumb {
+            background: #d1d3e0;
+            border-radius: 4px;
+        }
+
+        .sidebar-wrapper::-webkit-scrollbar-thumb:hover {
+            background: #b7b9cc;
+        }
+
+        /* ===== BADGE ===== */
+        .badge-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+
+        .badge-dot-success {
+            background: #1cc88a;
+        }
+        .badge-dot-danger {
+            background: #e74a3b;
+        }
+        .badge-dot-warning {
+            background: #f6c23e;
+        }
+        .badge-dot-info {
+            background: #36b9cc;
+        }
+
+        /* ===== AVATAR ===== */
+        .avatar-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== -->
+    <!-- TOP NAVBAR           -->
+    <!-- ==================== -->
+    <nav class="navbar navbar-expand-lg navbar-admin">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/Admin/Dashboard">
+                <i class="fas fa-store"></i> LaptopStore Admin
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="adminNavbar">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <!-- Tên User -->
+                    @if (User?.Identity?.IsAuthenticated == true)
+                    {
+                        <li class="nav-item me-3">
+                            <span class="text-white">
+                                <i class="fas fa-user-circle"></i>
+                                <strong>@User.Identity.Name</strong>
+                            </span>
+                        </li>
+                    }
+
+                    <!-- Nút về trang chủ -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            <i class="fas fa-home"></i> Trang chủ
+                        </a>
+                    </li>
+
+                    <!-- Nút đăng xuất -->
+                    <li class="nav-item">
+                        <form asp-action="Logout" asp-controller="Account" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn-logout">
+                                <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==================== -->
+    <!-- BODY: SIDEBAR + MAIN -->
+    <!-- ==================== -->
+    <div class="container-fluid p-0">
+        <div class="row g-0">
+
+            <!-- ===== SIDEBAR ===== -->
+            <div class="col-md-2 col-lg-2 d-md-block sidebar-wrapper">
+                <div class="position-sticky">
+                    <ul class="nav flex-column">
+
+                        <!-- Dashboard -->
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/Admin/Dashboard">
+                                <i class="fas fa-tachometer-alt"></i> Dashboard
+                            </a>
+                        </li>
+
+                        <div class="nav-divider"></div>
+
+                        <!-- QUẢN LÝ SẢN PHẨM -->
+                        <li class="nav-header">Quản lý</li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Admin/Product">
+                                <i class="fas fa-laptop"></i> Sản phẩm
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Admin/Brand">
+                                <i class="fas fa-tag"></i> Hãng sản xuất
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Admin/User">
+                                <i class="fas fa-users"></i> Người dùng
+                            </a>
+                        </li>
+
+                        <div class="nav-divider"></div>
+
+                        <!-- QUẢN LÝ ĐƠN HÀNG -->
+                        <li class="nav-header">Bán hàng</li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Admin/Order">
+                                <i class="fas fa-shopping-cart"></i> Đơn hàng
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="fas fa-chart-line"></i> Thống kê
+                            </a>
+                        </li>
+
+                        <div class="nav-divider"></div>
+
+                        <!-- CÀI ĐẶT -->
+                        <li class="nav-header">Hệ thống</li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="fas fa-cog"></i> Cài đặt
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">
+                                <i class="fas fa-external-link-alt"></i> Về trang chủ
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ===== MAIN CONTENT ===== -->
+            <main class="col-md-10 col-lg-10 main-content">
+                @RenderBody()
+            </main>
+
+        </div>
+    </div>
+
+    <!-- ==================== -->
+    <!-- SCRIPTS               -->
+    <!-- ==================== -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js">
+    </script>
+
+    <!-- Script để active menu theo trang hiện tại -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPath = window.location.pathname;
+            const navLinks = document.querySelectorAll('.sidebar-wrapper .nav-link');
+
+            navLinks.forEach(function(link) {
+                const href = link.getAttribute('href');
+                if (href && currentPath.includes(href)) {
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

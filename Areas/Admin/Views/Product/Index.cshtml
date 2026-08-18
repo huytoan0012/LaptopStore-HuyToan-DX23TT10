@@ -1,0 +1,120 @@
+@using System.Linq
+@model List<LaptopStore.Models.Product>
+
+@{
+    ViewData["Title"] = "Quản lý sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="fas fa-laptop"></i> Quản lý sản phẩm</h1>
+        <a href="/Admin/Product/Create" class="btn btn-primary">
+            <i class="fas fa-plus-circle"></i> Thêm sản phẩm
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>#</th>
+                            <th style="width: 60px;">Ảnh</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Hãng</th>
+                            <th>Giá</th>
+                            <th>Tồn kho</th>
+                            <th>Trạng thái</th>
+                            <th style="width: 150px;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model == null || !Model.Any())
+                        {
+                            <tr>
+                                <td colspan="8" class="text-center text-muted">Chưa có sản phẩm nào.</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            var stt = 1;
+                            @foreach (var product in Model)
+                            {
+                                <tr>
+                                    <td>@stt</td>
+                                    <td>
+                                        <img src="@(string.IsNullOrEmpty(product.ImageUrl) ? "/images/no-image.jpg" : product.ImageUrl)" 
+                                             alt="@product.Name" style="width: 50px; height: 50px; object-fit: contain; border-radius: 4px;" />
+                                    </td>
+                                    <td>
+                                        <strong>@product.Name</strong>
+                                        <br />
+                                        <small class="text-muted">@(product.Description?.Length > 30 ? product.Description.Substring(0, 30) + "..." : product.Description)</small>
+                                    </td>
+                                    <td>@product.Brand?.Name</td>
+                                    <td class="text-danger fw-bold">@product.Price.ToString("N0") đ</td>
+                                    <td>
+                                        @if (product.StockQuantity > 0)
+                                        {
+                                            <span class="badge bg-success">@product.StockQuantity</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger">Hết hàng</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (product.IsActive)
+                                        {
+                                            <span class="badge bg-success">Hiển thị</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">Ẩn</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="/Admin/Product/Edit/@product.Id" class="btn btn-warning" title="Sửa">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="/Admin/Product/ToggleStatus/@product.Id" class="btn btn-info" title="@(product.IsActive ? "Ẩn" : "Hiển thị")">
+                                                <i class="fas fa-@(product.IsActive ? "eye-slash" : "eye")"></i>
+                                            </a>
+                                            <form action="/Admin/Product/Delete/@product.Id" method="post" class="d-inline"
+                                                  onsubmit="return confirm('Bạn có chắc muốn xóa sản phẩm @product.Name?')">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="btn btn-danger" title="Xóa">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                stt++;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
