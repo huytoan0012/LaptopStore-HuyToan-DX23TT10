@@ -202,24 +202,26 @@
 <!-- ===== HERO ===== -->
 <div class="hero-section text-center">
     <div class="container">
-        <h1>🛒 Chào mừng đến với LaptopStore</h1>
+        <h1>🛒 Chào mừng đến với LaptopTTStore</h1>
         <p class="lead">Nơi cung cấp những chiếc laptop chất lượng nhất</p>
         <a href="#" class="btn-hero">Khám phá ngay</a>
     </div>
 </div>
-
+S
 <!-- ===== THƯƠNG HIỆU ===== -->
 <section class="brands-section mb-5">
-    <h2 class="text-center mb-4">🏷️ Thương hiệu nổi bật</h2>
+    <h2 class="text-center mb-4">Thương hiệu nổi bật</h2>
     <div class="row justify-content-center">
         @foreach (var brand in Model.Brands)
         {
-            <div class="col-4 col-md-2 mb-3">
-                <div class="brand-card">
-                    <div class="brand-name">@brand.Name</div>
+            <div class="col-6 col-md-2 text-center mb-3">
+                <div class="brand-card p-3 border rounded shadow-sm" 
+                     style="cursor: pointer; transition: all 0.3s ease;"
+                     onclick="location.href='/Products?brandId=@brand.Id'">
+                    <div class="brand-name fw-bold">@brand.Name</div>
                     @if (!string.IsNullOrEmpty(brand.LogoUrl))
                     {
-                        <img src="@brand.LogoUrl" alt="@brand.Name" style="max-height: 40px; margin-top: 5px;" />
+                        <img src="@brand.LogoUrl" alt="@brand.Name" class="img-fluid" style="max-height: 50px; margin-top: 5px;" />
                     }
                 </div>
             </div>
