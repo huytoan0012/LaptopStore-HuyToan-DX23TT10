@@ -1,0 +1,105 @@
+@model List<LaptopStore.Models.Brand>
+
+@{
+    ViewData["Title"] = "Quản lý hãng sản xuất";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="fas fa-tag"></i> Quản lý hãng sản xuất</h1>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus-circle"></i> Thêm hãng mới
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Tên hãng</th>
+                            <th>Logo</th>
+                            <th>Mô tả</th>
+                            <th>Số sản phẩm</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center text-muted">Chưa có hãng sản xuất nào.</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            var stt = 1;
+                            foreach (var brand in Model)
+                            {
+                                var productCount = brand.Products?.Count ?? 0;
+                                <tr>
+                                    <td>@stt</td>
+                                    <td>
+                                        <strong>@brand.Name</strong>
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(brand.LogoUrl))
+                                        {
+                                            <img src="@brand.LogoUrl" alt="@brand.Name" style="height: 40px; object-fit: contain;" />
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Chưa có logo</span>
+                                        }
+                                    </td>
+                                    <td>@(brand.Description?.Length > 50 ? brand.Description.Substring(0, 50) + "..." : brand.Description)</td>
+                                    <td>
+                                        <span class="badge bg-info">@productCount</span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a asp-action="Edit" asp-route-id="@brand.Id" class="btn btn-warning">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <form asp-action="Delete" method="post" class="d-inline"
+                                                  onsubmit="return confirm('Bạn có chắc muốn xóa hãng @brand.Name?')">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@brand.Id" />
+                                                <button type="submit" class="btn btn-danger" @(productCount > 0 ? "disabled" : "")>
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                        @if (productCount > 0)
+                                        {
+                                            <small class="text-muted d-block">(Có sản phẩm, không xóa được)</small>
+                                        }
+                                    </td>
+                                </tr>
+                                stt++;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
