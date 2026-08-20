@@ -32,7 +32,6 @@ namespace LaptopStore.Controllers
             SetCartViewData(cart);
             return View();
         }
-// POST: /Order/Checkout
 [HttpPost]
 [ValidateAntiForgeryToken]
 public async Task<IActionResult> Checkout(CheckoutViewModel model)
@@ -63,7 +62,7 @@ public async Task<IActionResult> Checkout(CheckoutViewModel model)
             Notes = model.Notes,
             OrderDate = DateTime.Now,
             Status = "Pending",
-            PaymentMethod = model.PaymentMethod,  // ← THÊM DÒNG NÀY
+            PaymentMethod = model.PaymentMethod,
             TotalAmount = cart.Sum(c => c.Price * c.Quantity)
         };
 

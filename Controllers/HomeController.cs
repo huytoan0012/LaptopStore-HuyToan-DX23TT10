@@ -8,7 +8,7 @@ using LaptopStore
 .Models;
 using LaptopStore
 
-.ViewModels;  // ← Thêm dòng này
+.ViewModels;
 using System.Diagnostics;
 
 namespace LaptopStore

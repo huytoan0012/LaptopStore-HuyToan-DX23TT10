@@ -27,16 +27,14 @@ namespace LaptopStore
         [Range(0, int.MaxValue, ErrorMessage = "Số lượng phải lớn hơn hoặc bằng 0")]
         public int StockQuantity { get; set; }
 
-        public string? ImageUrl { get; set; } // Đường dẫn ảnh sản phẩm
+        public string? ImageUrl { get; set; }
 
-        // Thông số kỹ thuật (lưu dưới dạng JSON nếu phức tạp)
-        public string? Specs { get; set; } // Ví dụ: "CPU: Intel i7, RAM: 16GB..."
+        public string? Specs { get; set; }
 
         public DateTime CreatedDate { get; set; } = DateTime.Now;
 
         public bool IsActive { get; set; } = true;
 
-        // Khóa ngoại: Liên kết với Brand
         public int BrandId { get; set; }
 
         [ForeignKey("BrandId")]

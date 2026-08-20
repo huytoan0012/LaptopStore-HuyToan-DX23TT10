@@ -30,10 +30,10 @@ namespace LaptopStore
         public decimal TotalAmount { get; set; }
 
         [StringLength(50)]
-        public string? Status { get; set; } = "Pending"; // Pending, Processing, Shipped, Completed, Cancelled
+        public string? Status { get; set; } = "Pending";
 
         [StringLength(50)]
-        public string? PaymentMethod { get; set; } = "COD"; // COD, BankTransfer
+        public string? PaymentMethod { get; set; } = "COD";
         
         public string? Notes { get; set; }
 

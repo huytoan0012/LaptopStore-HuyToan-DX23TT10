@@ -25,14 +25,12 @@ namespace LaptopStore
             _roleManager = roleManager;
         }
 
-        // GET: /Account/Register
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
 
-        // POST: /Account/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
@@ -50,14 +48,12 @@ namespace LaptopStore
 
                 if (result.Succeeded)
                 {
-                    // Tạo role User nếu chưa có
                     if (!await _roleManager.RoleExistsAsync("User"))
                     {
                         await _roleManager.CreateAsync(new IdentityRole("User"));
                     }
                     await _userManager.AddToRoleAsync(user, "User");
 
-                    // Đăng nhập tự động
                     await _signInManager.SignInAsync(user, isPersistent: false);
 
                     TempData["Success"] = "Đăng ký thành công! Chào mừng bạn đến với LaptopStore.";
@@ -73,7 +69,6 @@ namespace LaptopStore
             return View(model);
         }
 
-        // GET: /Account/Login
         [HttpGet]
         public IActionResult Login(string? returnUrl = null)
         {
@@ -81,7 +76,6 @@ namespace LaptopStore
             return View();
         }
 
-        // POST: /Account/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
@@ -114,7 +108,6 @@ namespace LaptopStore
             return View(model);
         }
 
-        // POST: /Account/Logout
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
@@ -124,7 +117,6 @@ namespace LaptopStore
             return RedirectToAction("Index", "Home");
         }
 
-        // GET: /Account/AccessDenied
         [HttpGet]
         public IActionResult AccessDenied()
         {

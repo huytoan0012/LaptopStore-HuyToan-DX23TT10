@@ -17,20 +17,17 @@ namespace LaptopStore.Areas.Admin.Controllers
             _context = context;
         }
 
-        // GET: /Admin/Brand
         public async Task<IActionResult> Index()
         {
             var brands = await _context.Brands.OrderBy(b => b.Name).ToListAsync();
             return View(brands);
         }
 
-        // GET: /Admin/Brand/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: /Admin/Brand/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Brand brand)
@@ -45,7 +42,6 @@ namespace LaptopStore.Areas.Admin.Controllers
             return View(brand);
         }
 
-        // GET: /Admin/Brand/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -56,7 +52,6 @@ namespace LaptopStore.Areas.Admin.Controllers
             return View(brand);
         }
 
-        // POST: /Admin/Brand/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Brand brand)
@@ -84,7 +79,6 @@ namespace LaptopStore.Areas.Admin.Controllers
             return View(brand);
         }
 
-        // POST: /Admin/Brand/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
@@ -95,7 +89,6 @@ namespace LaptopStore.Areas.Admin.Controllers
 
             if (brand == null) return NotFound();
 
-            // Kiểm tra xem hãng có sản phẩm không
             if (brand.Products != null && brand.Products.Any())
             {
                 TempData["Error"] = $"Không thể xóa hãng '{brand.Name}' vì đang có {brand.Products.Count} sản phẩm thuộc hãng này!";

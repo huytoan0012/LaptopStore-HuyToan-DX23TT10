@@ -17,16 +17,13 @@ namespace LaptopStore
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
             var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            // Đảm bảo database đã được tạo
             await context.Database.EnsureCreatedAsync();
 
-            // EnsureCreated không cập nhật schema của database đã tồn tại.
             await context.Database.ExecuteSqlRawAsync("""
                 IF COL_LENGTH('dbo.Orders', 'PaymentMethod') IS NULL
                     ALTER TABLE [dbo].[Orders] ADD [PaymentMethod] nvarchar(50) NULL;
                 """);
 
-            // ===== 1. Tạo dữ liệu cho bảng Brands (Hãng sản xuất) =====
             if (!context.Brands.Any())
             {
                 var brands = new Brand[]
@@ -42,10 +39,8 @@ namespace LaptopStore
                 await context.SaveChangesAsync();
             }
 
-            // ===== 2. Tạo dữ liệu cho bảng Products (Sản phẩm laptop) =====
             if (!context.Products.Any())
             {
-                // Lấy ID của các hãng đã tạo
                 var dell = await context.Brands.FirstOrDefaultAsync(b => b.Name == "Dell");
                 var hp = await context.Brands.FirstOrDefaultAsync(b => b.Name == "HP");
                 var lenovo = await context.Brands.FirstOrDefaultAsync(b => b.Name == "Lenovo");
@@ -55,7 +50,6 @@ namespace LaptopStore
 
                 var products = new Product[]
                 {
-                    // Dell
                     new Product
                     {
                         Name = "Dell XPS 13 Plus",
@@ -80,7 +74,6 @@ namespace LaptopStore
                         IsActive = true,
                         CreatedDate = DateTime.Now
                     },
-                    // HP
                     new Product
                     {
                         Name = "HP Spectre x360",
@@ -105,7 +98,6 @@ namespace LaptopStore
                         IsActive = true,
                         CreatedDate = DateTime.Now
                     },
-                    // Lenovo
                     new Product
                     {
                         Name = "Lenovo ThinkPad X1 Carbon Gen 11",
@@ -130,7 +122,6 @@ namespace LaptopStore
                         IsActive = true,
                         CreatedDate = DateTime.Now
                     },
-                    // Asus
                     new Product
                     {
                         Name = "Asus ROG Zephyrus G14",
@@ -155,7 +146,6 @@ namespace LaptopStore
                         IsActive = true,
                         CreatedDate = DateTime.Now
                     },
-                    // Acer
                     new Product
                     {
                         Name = "Acer Swift 3",
@@ -168,7 +158,6 @@ namespace LaptopStore
                         IsActive = true,
                         CreatedDate = DateTime.Now
                     },
-                    // MSI
                     new Product
                     {
                         Name = "MSI Stealth 14 Studio",
@@ -186,7 +175,6 @@ namespace LaptopStore
                 await context.SaveChangesAsync();
             }
 
-            // ===== 3. Tạo tài khoản Admin =====
             const string adminEmail = "admin@LaptopStore.com";
             const string adminPassword = "Admin@123";
 

@@ -13,7 +13,6 @@
         <span class="text-muted">@DateTime.Now.ToString("dd/MM/yyyy HH:mm")</span>
     </div>
 
-    <!-- ===== 4 THẺ THỐNG KÊ ===== -->
     <div class="row">
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-primary shadow h-100 py-2">
@@ -81,7 +80,6 @@
         </div>
     </div>
 
-    <!-- ===== BIỂU ĐỒ ===== -->
     <div class="row">
         <div class="col-lg-8">
             <div class="card shadow mb-4">
@@ -106,7 +104,6 @@
         </div>
     </div>
 
-    <!-- ===== TOP SẢN PHẨM + ĐƠN HÀNG GẦN ĐÂY ===== -->
     <div class="row">
         <div class="col-lg-6">
             <div class="card shadow mb-4">
@@ -188,10 +185,8 @@
     </div>
 </div>
 
-<!-- ===== SCRIPT VẼ BIỂU ĐỒ ===== -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // ===== BIỂU ĐỒ 1: DOANH THU THEO THÁNG =====
         const revenueData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.MonthlyRevenues));
         const revenueCtx = document.getElementById('revenueChart').getContext('2d');
 
@@ -236,12 +231,10 @@
             revenueCtx.fillText('Chưa có dữ liệu', 200, 100);
         }
 
-        // ===== BIỂU ĐỒ 2: TRẠNG THÁI ĐƠN HÀNG (ĐÃ SỬA LỖI undefined) =====
 const statusData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.OrderStatusCounts));
 const statusCtx = document.getElementById('statusChart').getContext('2d');
 
 if (statusData && statusData.length > 0) {
-    // 🛠️ Lọc bỏ các status bị null hoặc undefined
     const filteredData = statusData.filter(s => s.Status && s.Status !== 'undefined' && s.Status !== 'null');
 
     if (filteredData.length > 0) {
@@ -283,7 +276,6 @@ if (statusData && statusData.length > 0) {
             }
         });
     } else {
-        // Hiển thị thông báo nếu tất cả đều undefined
         statusCtx.fillStyle = '#ccc';
         statusCtx.font = '16px Arial';
         statusCtx.textAlign = 'center';

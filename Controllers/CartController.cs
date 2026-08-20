@@ -19,14 +19,12 @@ namespace LaptopStore
             _cartService = cartService;
         }
 
-        // GET: /Cart
         public IActionResult Index()
         {
             var cartItems = _cartService.GetCartItems();
             return View(cartItems);
         }
 
-        // POST: /Cart/AddToCart
         [HttpPost]
         public IActionResult AddToCart(int productId, int quantity = 1)
         {
@@ -35,7 +33,6 @@ namespace LaptopStore
             return RedirectToAction("Index");
         }
 
-        // POST: /Cart/UpdateQuantity
         [HttpPost]
         public IActionResult UpdateQuantity(int productId, int quantity)
         {
@@ -43,7 +40,6 @@ namespace LaptopStore
             return RedirectToAction("Index");
         }
 
-        // POST: /Cart/RemoveFromCart
         [HttpPost]
         public IActionResult RemoveFromCart(int productId)
         {
@@ -52,7 +48,6 @@ namespace LaptopStore
             return RedirectToAction("Index");
         }
 
-        // GET: /Cart/ClearCart
         public IActionResult ClearCart()
         {
             _cartService.ClearCart();
@@ -60,7 +55,6 @@ namespace LaptopStore
             return RedirectToAction("Index");
         }
 
-        // GET: /Cart/GetCartCount (API để hiển thị số lượng trên header)
         [HttpGet]
         public IActionResult GetCartCount()
         {

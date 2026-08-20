@@ -29,14 +29,12 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <!-- Tên sản phẩm -->
                         <div class="mb-3">
                             <label asp-for="Name" class="form-label">Tên sản phẩm <span class="text-danger">*</span></label>
                             <input asp-for="Name" name="Name" id="Name" class="form-control" required />
                             <span asp-validation-for="Name" class="text-danger"></span>
                         </div>
 
-                        <!-- Hãng sản xuất -->
                         <div class="mb-3">
                             <label asp-for="BrandId" class="form-label">Hãng sản xuất <span class="text-danger">*</span></label>
                             <select asp-for="BrandId" name="BrandId" id="BrandId" class="form-select" required>
@@ -52,14 +50,12 @@
                             <span asp-validation-for="BrandId" class="text-danger"></span>
                         </div>
 
-                        <!-- Giá -->
                         <div class="mb-3">
                             <label asp-for="Price" class="form-label">Giá (VNĐ) <span class="text-danger">*</span></label>
                             <input asp-for="Price" name="Price" id="Price" class="form-control" type="number" required />
                             <span asp-validation-for="Price" class="text-danger"></span>
                         </div>
 
-                        <!-- Số lượng tồn kho -->
                         <div class="mb-3">
                             <label asp-for="StockQuantity" class="form-label">Số lượng tồn kho <span class="text-danger">*</span></label>
                             <input asp-for="StockQuantity" name="StockQuantity" id="StockQuantity" class="form-control" type="number" required />
@@ -68,20 +64,17 @@
                     </div>
 
                     <div class="col-md-6">
-                        <!-- Ảnh -->
                         <div class="mb-3">
                             <label class="form-label">Ảnh sản phẩm</label>
                             <input type="file" name="imageFile" id="imageFile" class="form-control" accept="image/*" />
                         </div>
 
-                        <!-- Thông số -->
                         <div class="mb-3">
                             <label asp-for="Specs" class="form-label">Thông số kỹ thuật</label>
                             <textarea asp-for="Specs" name="Specs" id="Specs" class="form-control" rows="3" placeholder="VD: CPU: Intel i7 | RAM: 16GB"></textarea>
                             <span asp-validation-for="Specs" class="text-danger"></span>
                         </div>
 
-                        <!-- Mô tả -->
                         <div class="mb-3">
                             <label asp-for="Description" class="form-label">Mô tả</label>
                             <textarea asp-for="Description" name="Description" id="Description" class="form-control" rows="3" placeholder="Mô tả chi tiết sản phẩm..."></textarea>

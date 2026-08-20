@@ -19,7 +19,6 @@ namespace LaptopStore.Areas.Admin.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        // GET: /Admin/Product
         public async Task<IActionResult> Index()
         {
             var products = await _context.Products
@@ -29,22 +28,18 @@ namespace LaptopStore.Areas.Admin.Controllers
             return View(products);
         }
 
-        // GET: /Admin/Product/Create
         public async Task<IActionResult> Create()
         {
             ViewBag.Brands = await _context.Brands.ToListAsync();
             return View();
         }
 
-       // POST: /Admin/Product/Create
 [HttpPost]
 [ValidateAntiForgeryToken]
 public async Task<IActionResult> Create(Product product, IFormFile? imageFile)
 {
-    // 🔴 Bước 1: Kiểm tra lỗi ModelState (VD: Tên để trống, Giá nhập chữ...)
     if (!ModelState.IsValid)
     {
-        // Lấy danh sách lỗi và ghi vào TempData để hiển thị ra View
         var errors = ModelState.Values.SelectMany(v => v.Errors);
         string errorMsg = "Vui lòng kiểm tra lại dữ liệu: ";
         foreach (var error in errors)
@@ -59,7 +54,6 @@ public async Task<IActionResult> Create(Product product, IFormFile? imageFile)
 
     try
     {
-        // Xử lý upload ảnh
         if (imageFile != null && imageFile.Length > 0)
         {
             var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
@@ -79,20 +73,17 @@ public async Task<IActionResult> Create(Product product, IFormFile? imageFile)
         _context.Products.Add(product);
         await _context.SaveChangesAsync();
 
-        // ✅ THÀNH CÔNG: Hiển thị thông báo xanh
         TempData["Success"] = "✅ Thêm sản phẩm thành công!";
         return RedirectToAction(nameof(Index));
     }
     catch (Exception ex)
     {
-        // ❌ THẤT BẠI: Hiển thị lỗi đỏ
         TempData["Error"] = $"❌ Lỗi hệ thống: {ex.Message}";
         ViewBag.Brands = await _context.Brands.ToListAsync();
         return View(product);
     }
 }
 
-// GET: /Admin/Product/Edit/5
 public async Task<IActionResult> Edit(int? id)
 {
     if (id == null)
@@ -110,7 +101,6 @@ public async Task<IActionResult> Edit(int? id)
     return View(product);
 }
 
-// POST: /Admin/Product/Edit/5
 [HttpPost]
 [ValidateAntiForgeryToken]
 public async Task<IActionResult> Edit(int id, Product product, IFormFile? imageFile)
@@ -120,7 +110,6 @@ public async Task<IActionResult> Edit(int id, Product product, IFormFile? imageF
         return NotFound();
     }
 
-    // Kiểm tra lỗi validation
     if (!ModelState.IsValid)
     {
         var errors = ModelState.Values.SelectMany(v => v.Errors);
@@ -142,7 +131,6 @@ public async Task<IActionResult> Edit(int id, Product product, IFormFile? imageF
             return NotFound();
         }
 
-        // Cập nhật thông tin
         existingProduct.Name = product.Name;
         existingProduct.Price = product.Price;
         existingProduct.Description = product.Description;
@@ -151,10 +139,8 @@ public async Task<IActionResult> Edit(int id, Product product, IFormFile? imageF
         existingProduct.BrandId = product.BrandId;
         existingProduct.IsActive = product.IsActive;
 
-        // Xử lý upload ảnh mới
         if (imageFile != null && imageFile.Length > 0)
         {
-            // Xóa ảnh cũ
             if (!string.IsNullOrEmpty(existingProduct.ImageUrl))
             {
                 var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath,
@@ -165,7 +151,6 @@ public async Task<IActionResult> Edit(int id, Product product, IFormFile? imageF
                 }
             }
 
-            // Lưu ảnh mới
             var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
             var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", "products", fileName);
             Directory.CreateDirectory(Path.GetDirectoryName(filePath)!);
@@ -190,7 +175,6 @@ public async Task<IActionResult> Edit(int id, Product product, IFormFile? imageF
         return View(product);
     }
 }
-        // POST: /Admin/Product/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
@@ -203,7 +187,6 @@ public async Task<IActionResult> Edit(int id, Product product, IFormFile? imageF
                     return NotFound();
                 }
 
-                // Xóa ảnh nếu có
                 if (!string.IsNullOrEmpty(product.ImageUrl))
                 {
                     var imagePath = Path.Combine(_webHostEnvironment.WebRootPath,
@@ -228,7 +211,6 @@ public async Task<IActionResult> Edit(int id, Product product, IFormFile? imageF
             }
         }
 
-        // GET: /Admin/Product/ToggleStatus/5
         public async Task<IActionResult> ToggleStatus(int id)
         {
             try

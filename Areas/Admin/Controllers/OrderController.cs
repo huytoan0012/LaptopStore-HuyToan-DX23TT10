@@ -17,7 +17,6 @@ namespace LaptopStore.Areas.Admin.Controllers
             _context = context;
         }
 
-        // GET: /Admin/Order
         public async Task<IActionResult> Index()
         {
             var orders = await _context.Orders
@@ -28,7 +27,6 @@ namespace LaptopStore.Areas.Admin.Controllers
             return View(orders);
         }
 
-        // GET: /Admin/Order/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
@@ -43,7 +41,6 @@ namespace LaptopStore.Areas.Admin.Controllers
             return View(order);
         }
 
-        // POST: /Admin/Order/UpdateStatus
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateStatus(int id, string status)

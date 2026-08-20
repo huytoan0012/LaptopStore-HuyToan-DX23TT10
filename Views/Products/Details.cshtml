@@ -5,7 +5,6 @@
 }
 
 <div class="container mt-4">
-    <!-- Breadcrumb -->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
@@ -14,9 +13,7 @@
         </ol>
     </nav>
 
-    <!-- Chi tiết sản phẩm -->
     <div class="row">
-        <!-- Ảnh sản phẩm -->
         <div class="col-md-5">
             <div class="card shadow-sm">
                 <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? "/images/no-image.jpg" : Model.ImageUrl)" 
@@ -25,7 +22,6 @@
             </div>
         </div>
 
-        <!-- Thông tin sản phẩm -->
         <div class="col-md-7">
             <h1 class="display-6 fw-bold">@Model.Name</h1>
             
@@ -103,7 +99,6 @@
         </div>
     </div>
 
-    <!-- Sản phẩm cùng hãng -->
     @if (ViewBag.RelatedProducts != null && ((List<LaptopStore
 
 .Models.Product>)ViewBag.RelatedProducts).Any())
@@ -131,7 +126,6 @@
     }
 </div>
 
-<!-- JavaScript cho số lượng -->
 <script>
     function decreaseQuantity() {
     var input = document.getElementById('quantity');
@@ -157,7 +151,6 @@ function increaseQuantity() {
     function addToCart(productId) {
         var quantity = document.getElementById('quantity').value;
         alert('Đã thêm ' + quantity + ' sản phẩm vào giỏ hàng! (Chức năng sẽ được xây dựng ở bước sau)');
-        // Sau này sẽ gọi API thêm vào giỏ hàng ở đây
     }
 </script>
 
@@ -175,7 +168,6 @@ function increaseQuantity() {
     .input-group .form-control {
         border-radius: 0;
     }
-    /* Ẩn nút tăng/giảm mặc định của input number */
     input[type="number"]::-webkit-inner-spin-button,
     input[type="number"]::-webkit-outer-spin-button {
         -webkit-appearance: none;
