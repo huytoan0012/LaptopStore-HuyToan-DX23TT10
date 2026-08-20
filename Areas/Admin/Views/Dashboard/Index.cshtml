@@ -1,55 +1,309 @@
+@model LaptopStore.ViewModels.StatisticsViewModel
+
 @{
-    ViewData["Title"] = "Admin Dashboard";
+    ViewData["Title"] = "Dashboard Admin";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1><i class="fas fa-tachometer-alt"></i> Dashboard Admin</h1>
-                <span class="text-muted">Xin chào, <strong>@(User?.Identity?.Name ?? "Admin")</strong></span>
-            </div>
-            <hr />
-        </div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="fas fa-chart-line"></i> Tổng quan</h1>
+        <span class="text-muted">@DateTime.Now.ToString("dd/MM/yyyy HH:mm")</span>
     </div>
 
-    <!-- Quick Actions -->
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0"><i class="fas fa-bolt"></i> Chức năng quản trị</h5>
-                </div>
+    <!-- ===== 4 THẺ THỐNG KÊ ===== -->
+    <div class="row">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-3 mb-3">
-                            <a href="/Admin/User" class="btn btn-outline-primary w-100 py-3">
-                                <i class="fas fa-users fa-2x d-block"></i>
-                                Quản lý người dùng
-                            </a>
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tổng doanh thu</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.TotalRevenue.ToString("N0") đ</div>
                         </div>
-                        <div class="col-md-3 mb-3">
-                            <a href="/Admin/Product" class="btn btn-outline-success w-100 py-3">
-                                <i class="fas fa-laptop fa-2x d-block"></i>
-                                Quản lý sản phẩm
-                            </a>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
                         </div>
-                        <div class="col-md-3 mb-3">
-                            <a href="/Admin/Brand" class="btn btn-outline-info w-100 py-3">
-                                <i class="fas fa-tag fa-2x d-block"></i>
-                                Quản lý hãng
-                            </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Tổng đơn hàng</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.TotalOrders</div>
                         </div>
-                        <div class="col-md-3 mb-3">
-                            <a href="#" class="btn btn-outline-warning w-100 py-3">
-                                <i class="fas fa-shopping-cart fa-2x d-block"></i>
-                                Quản lý đơn hàng
-                            </a>
+                        <div class="col-auto">
+                            <i class="fas fa-shopping-cart fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Doanh thu hôm nay</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.TodayRevenue.ToString("N0") đ</div>
+                            <span class="text-muted small">@Model.TodayOrders đơn hàng</span>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar-day fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Sản phẩm / Người dùng</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.TotalProducts / @Model.TotalUsers</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-2x text-gray-300"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- ===== BIỂU ĐỒ ===== -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-chart-bar"></i> Doanh thu theo tháng</h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="revenueChart" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-chart-pie"></i> Trạng thái đơn hàng</h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="statusChart" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TOP SẢN PHẨM + ĐƠN HÀNG GẦN ĐÂY ===== -->
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-crown"></i> Top sản phẩm bán chạy</h6>
+                </div>
+                <div class="card-body">
+                    @if (Model.TopProducts.Any())
+                    {
+                        <table class="table table-sm">
+                            <thead>
+                                <tr><th>#</th><th>Sản phẩm</th><th>Số lượng</th><th>Doanh thu</th></tr>
+                            </thead>
+                            <tbody>
+                                @{ var rank = 1; }
+                                @foreach (var item in Model.TopProducts)
+                                {
+                                    <tr>
+                                        <td>@rank</td>
+                                        <td>@item.ProductName</td>
+                                        <td>@item.TotalQuantity</td>
+                                        <td class="text-danger fw-bold">@item.TotalRevenue.ToString("N0") đ</td>
+                                    </tr>
+                                    rank++;
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p class="text-muted text-center">Chưa có dữ liệu</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-clock"></i> Đơn hàng gần đây</h6>
+                </div>
+                <div class="card-body">
+                    @if (Model.RecentOrders.Any())
+                    {
+                        <table class="table table-sm">
+                            <thead>
+                                <tr><th>Mã</th><th>Người nhận</th><th>Tổng tiền</th><th>Trạng thái</th></tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var order in Model.RecentOrders)
+                                {
+                                    <tr>
+                                        <td>#@order.Id</td>
+                                        <td>@order.RecipientName</td>
+                                        <td class="text-danger">@order.TotalAmount.ToString("N0") đ</td>
+                                        <td>
+                                            <span class="badge bg-@(order.Status == "Pending" ? "warning" : 
+                                                           order.Status == "Processing" ? "info" : 
+                                                           order.Status == "Shipped" ? "primary" : 
+                                                           order.Status == "Completed" ? "success" : "secondary")">
+                                                @(order.Status == "Pending" ? "Đang xử lý" :
+                                                  order.Status == "Processing" ? "Đang chuẩn bị" :
+                                                  order.Status == "Shipped" ? "Đang giao" :
+                                                  order.Status == "Completed" ? "Hoàn thành" : "Đã hủy")
+                                            </span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p class="text-muted text-center">Chưa có đơn hàng</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- ===== SCRIPT VẼ BIỂU ĐỒ ===== -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // ===== BIỂU ĐỒ 1: DOANH THU THEO THÁNG =====
+        const revenueData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.MonthlyRevenues));
+        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+
+        if (revenueData && revenueData.length > 0) {
+            new Chart(revenueCtx, {
+                type: 'bar',
+                data: {
+                    labels: revenueData.map(r => r.Month),
+                    datasets: [{
+                        label: 'Doanh thu (VNĐ)',
+                        data: revenueData.map(r => r.Revenue),
+                        backgroundColor: 'rgba(78, 115, 223, 0.6)',
+                        borderColor: 'rgba(78, 115, 223, 1)',
+                        borderWidth: 2,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: true, position: 'top' }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    if (value >= 1000000) return (value / 1000000).toFixed(1) + 'tr';
+                                    if (value >= 1000) return (value / 1000).toFixed(0) + 'k';
+                                    return value.toString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        } else {
+            revenueCtx.fillStyle = '#ccc';
+            revenueCtx.font = '16px Arial';
+            revenueCtx.textAlign = 'center';
+            revenueCtx.fillText('Chưa có dữ liệu', 200, 100);
+        }
+
+        // ===== BIỂU ĐỒ 2: TRẠNG THÁI ĐƠN HÀNG (ĐÃ SỬA LỖI undefined) =====
+const statusData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.OrderStatusCounts));
+const statusCtx = document.getElementById('statusChart').getContext('2d');
+
+if (statusData && statusData.length > 0) {
+    // 🛠️ Lọc bỏ các status bị null hoặc undefined
+    const filteredData = statusData.filter(s => s.Status && s.Status !== 'undefined' && s.Status !== 'null');
+
+    if (filteredData.length > 0) {
+        const statusColors = {
+            'Pending': '#f6c23e',
+            'Processing': '#36b9cc',
+            'Shipped': '#4e73df',
+            'Completed': '#1cc88a',
+            'Cancelled': '#e74a3b',
+            'Chưa cập nhật': '#858796',
+            'Chưa có đơn hàng': '#dddfeb'
+        };
+        const statusLabels = {
+            'Pending': 'Đang xử lý',
+            'Processing': 'Đang chuẩn bị',
+            'Shipped': 'Đang giao',
+            'Completed': 'Hoàn thành',
+            'Cancelled': 'Đã hủy',
+            'Chưa cập nhật': 'Chưa cập nhật',
+            'Chưa có đơn hàng': 'Chưa có đơn hàng'
+        };
+
+        new Chart(statusCtx, {
+            type: 'doughnut',
+            data: {
+                labels: filteredData.map(s => statusLabels[s.Status] || s.Status),
+                datasets: [{
+                    data: filteredData.map(s => s.Count),
+                    backgroundColor: filteredData.map(s => statusColors[s.Status] || '#858796'),
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' }
+                }
+            }
+        });
+    } else {
+        // Hiển thị thông báo nếu tất cả đều undefined
+        statusCtx.fillStyle = '#ccc';
+        statusCtx.font = '16px Arial';
+        statusCtx.textAlign = 'center';
+        statusCtx.fillText('Không có dữ liệu hợp lệ', 100, 100);
+    }
+} else {
+    statusCtx.fillStyle = '#ccc';
+    statusCtx.font = '16px Arial';
+    statusCtx.textAlign = 'center';
+    statusCtx.fillText('Chưa có đơn hàng', 100, 100);
+}
+    });
+</script>
+
+<style>
+    .border-left-primary { border-left: 0.25rem solid #4e73df !important; }
+    .border-left-success { border-left: 0.25rem solid #1cc88a !important; }
+    .border-left-info { border-left: 0.25rem solid #36b9cc !important; }
+    .border-left-warning { border-left: 0.25rem solid #f6c23e !important; }
+    .text-xs { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    .text-gray-800 { color: #5a5c69; }
+    .text-gray-300 { color: #dddfeb; }
+</style>

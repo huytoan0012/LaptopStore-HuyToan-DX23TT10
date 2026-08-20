@@ -20,6 +20,12 @@ namespace LaptopStore
             // Đảm bảo database đã được tạo
             await context.Database.EnsureCreatedAsync();
 
+            // EnsureCreated không cập nhật schema của database đã tồn tại.
+            await context.Database.ExecuteSqlRawAsync("""
+                IF COL_LENGTH('dbo.Orders', 'PaymentMethod') IS NULL
+                    ALTER TABLE [dbo].[Orders] ADD [PaymentMethod] nvarchar(50) NULL;
+                """);
+
             // ===== 1. Tạo dữ liệu cho bảng Brands (Hãng sản xuất) =====
             if (!context.Brands.Any())
             {

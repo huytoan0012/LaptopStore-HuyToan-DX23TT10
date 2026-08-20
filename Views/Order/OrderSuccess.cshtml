@@ -28,6 +28,10 @@
                     <h5>Chi tiết đơn hàng</h5>
                     <p>
                         <strong>Ngày đặt:</strong> @Model.OrderDate.ToString("dd/MM/yyyy HH:mm")<br />
+                        <strong>Phương thức thanh toán:</strong> 
+                        <span class="badge bg-@(Model.PaymentMethod == "COD" ? "success" : "primary")">
+                            @(Model.PaymentMethod == "COD" ? "COD - Thanh toán khi nhận hàng" : "Chuyển khoản ngân hàng")
+                        </span><br />
                         <strong>Trạng thái:</strong> <span class="badge bg-warning">Đang xử lý</span><br />
                         <strong>Tổng tiền:</strong> <span class="text-danger fw-bold">@Model.TotalAmount.ToString("N0") đ</span>
                     </p>

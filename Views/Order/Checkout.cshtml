@@ -42,6 +42,34 @@
                             <span asp-validation-for="ShippingAddress" class="text-danger"></span>
                         </div>
 
+                        <!-- ===== PHƯƠNG THỨC THANH TOÁN ===== -->
+<div class="mb-3">
+    <label class="form-label fw-bold">Phương thức thanh toán <span class="text-danger">*</span></label>
+    <div class="row g-3">
+        <div class="col-md-6">
+            <div class="payment-option border rounded p-3">
+                <input type="radio" id="PaymentMethod_COD" name="PaymentMethod" value="COD" checked />
+                <label for="PaymentMethod_COD" class="ms-2 fw-bold">
+                    <i class="fas fa-money-bill-wave text-success"></i> COD
+                    <br />
+                    <small class="text-muted fw-normal">Thanh toán khi nhận hàng</small>
+                </label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="payment-option border rounded p-3">
+                <input type="radio" id="PaymentMethod_Bank" name="PaymentMethod" value="BankTransfer" />
+                <label for="PaymentMethod_Bank" class="ms-2 fw-bold">
+                    <i class="fas fa-university text-primary"></i> Chuyển khoản
+                    <br />
+                    <small class="text-muted fw-normal">Chuyển khoản ngân hàng</small>
+                </label>
+            </div>
+        </div>
+    </div>
+    <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+</div>
+
                         <div class="mb-3">
                             <label asp-for="Notes" class="form-label fw-bold"></label>
                             <textarea asp-for="Notes" class="form-control" rows="2" placeholder="Ghi chú thêm cho đơn hàng..."></textarea>
@@ -100,6 +128,25 @@
         </div>
     </div>
 </div>
+
+<style>
+    .payment-option {
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .payment-option:hover {
+        border-color: #0d6efd !important;
+        background-color: #f8f9fa !important;
+    }
+    .payment-option input[type="radio"] {
+        transform: scale(1.2);
+        margin-right: 5px;
+    }
+    .payment-option.border-primary {
+        border-width: 2px !important;
+        background-color: #e7f1ff !important;
+    }
+</style>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

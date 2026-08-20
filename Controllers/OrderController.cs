@@ -32,58 +32,63 @@ namespace LaptopStore.Controllers
             SetCartViewData(cart);
             return View();
         }
+// POST: /Order/Checkout
+[HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> Checkout(CheckoutViewModel model)
+{
+    var cart = _cartService.GetCartItems();
+    if (!cart.Any())
+    {
+        TempData["Error"] = "Giỏ hàng trống!";
+        return RedirectToAction("Index", "Cart");
+    }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Checkout(CheckoutViewModel model)
+    if (!ModelState.IsValid)
+    {
+        ViewBag.Cart = cart;
+        return View(model);
+    }
+
+    try
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        var order = new Order
         {
-            var cart = _cartService.GetCartItems();
-            if (!cart.Any())
-            {
-                TempData["Error"] = "Giỏ hàng trống!";
-                return RedirectToAction("Index", "Cart");
-            }
+            UserId = userId,
+            RecipientName = model.RecipientName,
+            PhoneNumber = model.PhoneNumber,
+            ShippingAddress = model.ShippingAddress,
+            Notes = model.Notes,
+            OrderDate = DateTime.Now,
+            Status = "Pending",
+            PaymentMethod = model.PaymentMethod,  // ← THÊM DÒNG NÀY
+            TotalAmount = cart.Sum(c => c.Price * c.Quantity)
+        };
 
-            if (!ModelState.IsValid)
-            {
-                SetCartViewData(cart);
-                return View(model);
-            }
+        order.OrderDetails = cart.Select(c => new OrderDetail
+        {
+            ProductId = c.ProductId,
+            Quantity = c.Quantity,
+            UnitPrice = c.Price
+        }).ToList();
 
-            try
-            {
-                var order = new Order
-                {
-                    UserId = User.FindFirstValue(ClaimTypes.NameIdentifier),
-                    RecipientName = model.RecipientName,
-                    PhoneNumber = model.PhoneNumber,
-                    ShippingAddress = model.ShippingAddress,
-                    Notes = model.Notes,
-                    OrderDate = DateTime.Now,
-                    Status = "Pending",
-                    TotalAmount = cart.Sum(item => item.Price * item.Quantity),
-                    OrderDetails = cart.Select(item => new OrderDetail
-                    {
-                        ProductId = item.ProductId,
-                        Quantity = item.Quantity,
-                        UnitPrice = item.Price
-                    }).ToList()
-                };
+        _context.Orders.Add(order);
+        await _context.SaveChangesAsync();
 
-                _context.Orders.Add(order);
-                await _context.SaveChangesAsync();
+        _cartService.ClearCart();
 
-                _cartService.ClearCart();
-                TempData["Success"] = $"Đặt hàng thành công! Mã đơn hàng: #{order.Id}";
-                return RedirectToAction(nameof(OrderSuccess), new { id = order.Id });
-            }
-            catch (Exception ex)
-            {
-                TempData["Error"] = $"Lỗi khi đặt hàng: {ex.Message}";
-                SetCartViewData(cart);
-                return View(model);
-            }
-        }
+        TempData["Success"] = $"Đặt hàng thành công! Mã đơn hàng: #{order.Id}";
+        return RedirectToAction("OrderSuccess", new { id = order.Id });
+    }
+    catch (Exception ex)
+    {
+        TempData["Error"] = $"Lỗi khi đặt hàng: {ex.Message}";
+        ViewBag.Cart = cart;
+        return View(model);
+    }
+}
 
         public async Task<IActionResult> OrderSuccess(int id)
         {

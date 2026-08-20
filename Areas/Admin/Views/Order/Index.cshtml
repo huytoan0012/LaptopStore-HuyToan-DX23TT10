@@ -1,0 +1,76 @@
+@model List<LaptopStore.Models.Order>
+
+@{
+    ViewData["Title"] = "Quản lý đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <h1><i class="fas fa-shopping-cart"></i> Quản lý đơn hàng</h1>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <div class="card shadow">
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Mã đơn</th>
+                        <th>Ngày đặt</th>
+                        <th>Người nhận</th>
+                        <th>SĐT</th>
+                        <th>Tổng tiền</th>
+                        <th>Phương thức</th>
+                        <th>Trạng thái</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model)
+                    {
+                        <tr>
+                            <td>#@order.Id</td>
+                            <td>@order.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>@order.RecipientName</td>
+                            <td>@order.PhoneNumber</td>
+                            <td class="text-danger fw-bold">@order.TotalAmount.ToString("N0") đ</td>
+                            <td>
+                                @if (order.PaymentMethod == "COD")
+                                {
+                                    <span class="badge bg-success">COD</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-primary">Chuyển khoản</span>
+                                }
+                            </td>
+                            <td>
+                                <span class="badge bg-@(order.Status == "Pending" ? "warning" : 
+                                                       order.Status == "Processing" ? "info" : 
+                                                       order.Status == "Shipped" ? "primary" : 
+                                                       order.Status == "Completed" ? "success" : "secondary")">
+                                    @(order.Status == "Pending" ? "Đang xử lý" :
+                                      order.Status == "Processing" ? "Đang chuẩn bị" :
+                                      order.Status == "Shipped" ? "Đang giao" :
+                                      order.Status == "Completed" ? "Hoàn thành" : "Đã hủy")
+                                </span>
+                            </td>
+                            <td>
+                                <a href="/Admin/Order/Details/@order.Id" class="btn btn-info btn-sm">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

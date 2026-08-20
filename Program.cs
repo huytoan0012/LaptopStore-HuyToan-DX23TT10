@@ -1,11 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using LaptopStore
-
-.Data;
-using LaptopStore
-
-.Services;
+using LaptopStore.Data;
+using LaptopStore.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -68,8 +64,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthentication(); // QUAN TRỌNG: Xác thực
-app.UseAuthorization();  // QUAN TRỌNG: Phân quyền
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseSession();
 
 app.MapControllerRoute(

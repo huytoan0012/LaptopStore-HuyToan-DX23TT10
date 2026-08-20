@@ -18,6 +18,10 @@ namespace LaptopStore.ViewModels
         [StringLength(500, ErrorMessage = "Địa chỉ tối đa 500 ký tự")]
         [Display(Name = "Địa chỉ giao hàng")]
         public string ShippingAddress { get; set; } = string.Empty;
+        
+        [Required(ErrorMessage = "Vui lòng chọn phương thức thanh toán")]
+        [Display(Name = "Phương thức thanh toán")]
+        public string PaymentMethod { get; set; } = "COD";
 
         [Display(Name = "Ghi chú")]
         public string? Notes { get; set; }

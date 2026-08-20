@@ -32,8 +32,11 @@ namespace LaptopStore
         [StringLength(50)]
         public string? Status { get; set; } = "Pending"; // Pending, Processing, Shipped, Completed, Cancelled
 
+        [StringLength(50)]
+        public string? PaymentMethod { get; set; } = "COD"; // COD, BankTransfer
+        
         public string? Notes { get; set; }
 
-        public virtual ICollection<OrderDetail>? OrderDetails { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
     }
 }

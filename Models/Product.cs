@@ -42,7 +42,6 @@ namespace LaptopStore
         [ForeignKey("BrandId")]
         public virtual Brand? Brand { get; set; }
 
-       public virtual ICollection<OrderDetail>? OrderDetails { get; set; }
-        // public virtual ICollection<OrderDetail>? OrderDetails { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
     }
 }
