@@ -8,6 +8,9 @@
     var maxPrice = Context.Request.Query["maxPrice"].ToString();
     var ram = Context.Request.Query["ram"].ToString();
     var gpuChip = Context.Request.Query["gpuChip"].ToString();
+    var screenSize = Context.Request.Query["screenSize"].ToString();
+    var storage = Context.Request.Query["storage"].ToString();
+    var cpu = Context.Request.Query["cpu"].ToString();
 }
 
 <div class="container mt-4">
@@ -57,6 +60,36 @@
                         <form method="get" action="/Products">
                             <input type="text" name="gpuChip" class="form-control form-control-sm" placeholder="Ví dụ: RTX 4060 hoặc Intel" value="@gpuChip" />
                             <button type="submit" class="btn btn-primary btn-sm w-100 mt-2">Tìm theo VGA</button>
+                        </form>
+                    </div>
+
+                    <hr />
+
+                    <div class="filter-section mb-4">
+                        <h6 class="fw-bold mb-2"><i class="fas fa-desktop"></i> Kích cỡ màn hình</h6>
+                        <form method="get" action="/Products">
+                            <input type="text" name="screenSize" class="form-control form-control-sm" placeholder="Ví dụ: 15.6 hoặc 14 inch" value="@screenSize" />
+                            <button type="submit" class="btn btn-primary btn-sm w-100 mt-2">Tìm màn hình</button>
+                        </form>
+                    </div>
+
+                    <hr />
+
+                    <div class="filter-section mb-4">
+                        <h6 class="fw-bold mb-2"><i class="fas fa-hdd"></i> Bộ nhớ</h6>
+                        <form method="get" action="/Products">
+                            <input type="text" name="storage" class="form-control form-control-sm" placeholder="Ví dụ: 512GB hoặc 1TB" value="@storage" />
+                            <button type="submit" class="btn btn-primary btn-sm w-100 mt-2">Tìm bộ nhớ</button>
+                        </form>
+                    </div>
+
+                    <hr />
+
+                    <div class="filter-section mb-4">
+                        <h6 class="fw-bold mb-2"><i class="fas fa-microchip"></i> CPU</h6>
+                        <form method="get" action="/Products">
+                            <input type="text" name="cpu" class="form-control form-control-sm" placeholder="Ví dụ: Core i7 hoặc Ryzen 7" value="@cpu" />
+                            <button type="submit" class="btn btn-primary btn-sm w-100 mt-2">Tìm CPU</button>
                         </form>
                     </div>
 

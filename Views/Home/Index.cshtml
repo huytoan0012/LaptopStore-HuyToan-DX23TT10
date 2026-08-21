@@ -297,6 +297,24 @@
                     <button type="submit" class="btn btn-primary btn-sm w-100 mt-2">Tìm theo VGA</button>
                 </form>
 
+                <h6 class="fw-bold">Kích cỡ màn hình</h6>
+                <form method="get" action="/Products" class="mb-3">
+                    <input type="text" name="screenSize" class="form-control form-control-sm" placeholder="Ví dụ: 15.6 hoặc 14 inch" />
+                    <button type="submit" class="btn btn-primary btn-sm w-100 mt-2">Tìm màn hình</button>
+                </form>
+
+                <h6 class="fw-bold">Bộ nhớ</h6>
+                <form method="get" action="/Products" class="mb-3">
+                    <input type="text" name="storage" class="form-control form-control-sm" placeholder="Ví dụ: 512GB hoặc 1TB" />
+                    <button type="submit" class="btn btn-primary btn-sm w-100 mt-2">Tìm bộ nhớ</button>
+                </form>
+
+                <h6 class="fw-bold">CPU</h6>
+                <form method="get" action="/Products" class="mb-4">
+                    <input type="text" name="cpu" class="form-control form-control-sm" placeholder="Ví dụ: Core i7 hoặc Ryzen 7" />
+                    <button type="submit" class="btn btn-primary btn-sm w-100 mt-2">Tìm CPU</button>
+                </form>
+
                 <hr />
                 <h6 class="fw-bold">Thương hiệu</h6>
                 @foreach (var brand in Model.Brands)

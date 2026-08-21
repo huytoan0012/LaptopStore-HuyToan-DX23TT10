@@ -15,7 +15,7 @@ namespace LaptopStore.Controllers
         }
 
         // GET: /Products
-        public async Task<IActionResult> Index(int? brandId, string brandIds, int? minPrice, int? maxPrice, string searchString, string ram, string gpuChip)
+        public async Task<IActionResult> Index(int? brandId, string brandIds, int? minPrice, int? maxPrice, string searchString, string ram, string gpuChip, string screenSize, string storage, string cpu)
         {
             var products = _context.Products
                 .Include(p => p.Brand)
@@ -59,6 +59,21 @@ namespace LaptopStore.Controllers
             if (!string.IsNullOrWhiteSpace(gpuChip))
             {
                 products = products.Where(p => p.Specs != null && p.Specs.Contains(gpuChip));
+            }
+
+            if (!string.IsNullOrWhiteSpace(screenSize))
+            {
+                products = products.Where(p => p.Specs != null && p.Specs.Contains(screenSize));
+            }
+
+            if (!string.IsNullOrWhiteSpace(storage))
+            {
+                products = products.Where(p => p.Specs != null && p.Specs.Contains(storage));
+            }
+
+            if (!string.IsNullOrWhiteSpace(cpu))
+            {
+                products = products.Where(p => p.Specs != null && p.Specs.Contains(cpu));
             }
 
             var productList = await products
