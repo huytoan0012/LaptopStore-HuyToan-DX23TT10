@@ -200,14 +200,118 @@
 </style>
 
 <!-- ===== HERO ===== -->
-<div class="hero-section text-center">
-    <div class="container">
-        <h1>🛒 Chào mừng đến với LaptopTTStore</h1>
-        <p class="lead">Nơi cung cấp những chiếc laptop chất lượng nhất</p>
-        <a href="#" class="btn-hero">Khám phá ngay</a>
+<!-- ===== SLIDER QUẢNG CÁO (Carousel) ===== -->
+<div id="promoCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#promoCarousel" data-bs-slide-to="0" class="active"></button>
+        <button type="button" data-bs-target="#promoCarousel" data-bs-slide-to="1"></button>
+        <button type="button" data-bs-target="#promoCarousel" data-bs-slide-to="2"></button>
     </div>
+    <div class="carousel-inner rounded-3">
+        <!-- Slide 1: Đối điểm thi THPT -->
+        <div class="carousel-item active">
+            <div class="p-5 text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 300px;">
+                <div class="row align-items-center h-100">
+                    <div class="col-md-8">
+                        <span class="badge bg-warning text-dark mb-2">🔥 SIÊU SALE</span>
+                        <h2 class="display-4 fw-bold">ĐỐI ĐIỂM THI THPT</h2>
+                        <p class="lead">Nhận ngay ưu đãi lên đến <strong>5 TRIỆU</strong> khi mua laptop</p>
+                        <a href="#" class="btn btn-light btn-lg mt-3 fw-bold">Xem chi tiết →</a>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <i class="fas fa-graduation-cap" style="font-size: 80px; opacity: 0.3;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Slide 2: Flash Sale -->
+        <div class="carousel-item">
+            <div class="p-5 text-white" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); min-height: 300px;">
+                <div class="row align-items-center h-100">
+                    <div class="col-md-8">
+                        <span class="badge bg-danger mb-2">⚡ FLASH SALE</span>
+                        <h2 class="display-4 fw-bold">Giảm sốc 50%</h2>
+                        <p class="lead">Laptop gaming, văn phòng giảm giá cực sốc trong 24h</p>
+                        <a href="#" class="btn btn-light btn-lg mt-3 fw-bold">Mua ngay →</a>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <i class="fas fa-clock" style="font-size: 80px; opacity: 0.3;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Slide 3: Trả góp 0% -->
+        <div class="carousel-item">
+            <div class="p-5 text-white" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); min-height: 300px;">
+                <div class="row align-items-center h-100">
+                    <div class="col-md-8">
+                        <span class="badge bg-success mb-2">💳 TRẢ GÓP</span>
+                        <h2 class="display-4 fw-bold">Trả góp 0% lãi suất</h2>
+                        <p class="lead">Chỉ cần chứng minh thu nhập, nhận ngay laptop mới</p>
+                        <a href="#" class="btn btn-light btn-lg mt-3 fw-bold">Đăng ký ngay →</a>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <i class="fas fa-hand-holding-heart" style="font-size: 80px; opacity: 0.3;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Nút điều hướng -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#promoCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#promoCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
 </div>
-S
+
+<div class="row">
+    <aside class="col-lg-3 col-md-4 mb-4">
+        <div class="card shadow-sm filter-sidebar">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-filter"></i> Bộ lọc sản phẩm</h5>
+            </div>
+            <div class="card-body">
+                <h6 class="fw-bold">Khoảng giá</h6>
+                <form method="get" action="/Products" class="mb-4">
+                    <div class="d-flex gap-2">
+                        <input type="number" name="minPrice" class="form-control form-control-sm" placeholder="Giá từ" min="0" />
+                        <input type="number" name="maxPrice" class="form-control form-control-sm" placeholder="Giá đến" min="0" />
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-sm w-100 mt-2">Áp dụng</button>
+                </form>
+
+                <hr />
+                <h6 class="fw-bold">RAM</h6>
+                <form method="get" action="/Products" class="mb-3">
+                    <input type="text" name="ram" class="form-control form-control-sm" placeholder="Ví dụ: 16GB hoặc 32GB" />
+                    <button type="submit" class="btn btn-primary btn-sm w-100 mt-2">Tìm theo RAM</button>
+                </form>
+
+                <h6 class="fw-bold">Chip VGA</h6>
+                <form method="get" action="/Products" class="mb-4">
+                    <input type="text" name="gpuChip" class="form-control form-control-sm" placeholder="Ví dụ: RTX 4060 hoặc Intel" />
+                    <button type="submit" class="btn btn-primary btn-sm w-100 mt-2">Tìm theo VGA</button>
+                </form>
+
+                <hr />
+                <h6 class="fw-bold">Thương hiệu</h6>
+                @foreach (var brand in Model.Brands)
+                {
+                    <a href="/Products?brandId=@brand.Id" class="d-block text-decoration-none text-dark py-1">
+                        <i class="fas fa-tag text-primary me-2"></i>@brand.Name
+                    </a>
+                }
+
+                <a href="/Products" class="btn btn-outline-primary btn-sm w-100 mt-3">Xem tất cả sản phẩm</a>
+            </div>
+        </div>
+    </aside>
+
+    <main class="col-lg-9 col-md-8">
 <!-- ===== THƯƠNG HIỆU ===== -->
 <section class="brands-section mb-5">
     <h2 class="text-center mb-4">Thương hiệu nổi bật</h2>
@@ -275,7 +379,7 @@ S
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="productId" value="@product.Id" />
                             <input type="hidden" name="quantity" value="1" />
-                            <button type="submit" class="btn-add-cart">
+                            <button type="submit" class="btn btn-primary btn-sm w-100">
                                 <i class="fas fa-cart-plus"></i> Thêm vào giỏ
                             </button>
                         </form>
@@ -333,7 +437,7 @@ S
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="productId" value="@product.Id" />
                             <input type="hidden" name="quantity" value="1" />
-                            <button type="submit" class="btn-add-cart">
+                            <button type="submit" class="btn btn-primary btn-sm w-100">
                                 <i class="fas fa-cart-plus"></i> Thêm vào giỏ
                             </button>
                         </form>
@@ -343,3 +447,6 @@ S
         }
     </div>
 </section>
+
+    </main>
+</div>

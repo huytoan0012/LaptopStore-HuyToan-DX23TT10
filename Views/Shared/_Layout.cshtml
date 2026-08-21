@@ -9,6 +9,28 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
+        .contact-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f1f1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.contact-item:last-child {
+    border-bottom: none;
+}
+.contact-item i {
+    width: 30px;
+    font-size: 1.2rem;
+    text-align: center;
+}
+.contact-item a {
+    color: #0d6efd;
+    text-decoration: none;
+}
+.contact-item a:hover {
+    text-decoration: underline;
+}
         .product-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
@@ -77,10 +99,11 @@
                         <a class="nav-link" href="/">Trang chủ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Sản phẩm</a>
+                        <a class="nav-link" href="/Products">Sản phẩm</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Liên hệ</a>
+                    <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#contactModal">
+                        <i class="fas fa-phone-alt"></i> Liên hệ                       </a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
@@ -149,7 +172,7 @@
                     <h5>Liên kết</h5>
                     <ul class="list-unstyled">
                         <li><a href="/">Trang chủ</a></li>
-                        <li><a href="#">Sản phẩm</a></li>
+                        <li><a href="/Products">Sản phẩm</a></li>
                         <li><a href="#">Liên hệ</a></li>
                     </ul>
                 </div>
@@ -164,7 +187,7 @@
             </div>
             <hr class="bg-light" />
             <p class="text-center mb-0">&copy; 2024 LaptopTTStore
-S
+
  - All rights reserved.</p>
         </div>
     </footer>
@@ -197,5 +220,47 @@ S
     </script>
 
     @await RenderSectionAsync("Scripts", required: false)
+        <!-- Modal Liên hệ -->
+    <div class="modal fade" id="contactModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title"><i class="fas fa-headset"></i> Liên hệ với chúng tôi</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-phone-alt text-success"></i>
+                            <span><strong>Hotline:</strong> 0123 456 789</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope text-primary"></i>
+                            <span><strong>Email:</strong> info@LaptopTTStore.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-facebook text-primary"></i>
+                            <span><strong>Facebook:</strong> <a href="#" target="_blank">LaptopTTStore</a></span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-zalo text-info"></i>
+                            <span><strong>Zalo:</strong> <a href="#" target="_blank">0123 456 789</a></span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt text-danger"></i>
+                            <span><strong>Địa chỉ:</strong> TP. Hồ Chí Minh</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Các script cũ giữ nguyên -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- ... -->
 </body>
 </html>

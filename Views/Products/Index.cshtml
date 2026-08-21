@@ -4,52 +4,116 @@
     ViewData["Title"] = "Danh sách sản phẩm";
     var brands = ViewBag.Brands as List<LaptopStore.Models.Brand>;
     var selectedBrand = ViewBag.SelectedBrand as LaptopStore.Models.Brand;
+    var minPrice = Context.Request.Query["minPrice"].ToString();
+    var maxPrice = Context.Request.Query["maxPrice"].ToString();
+    var ram = Context.Request.Query["ram"].ToString();
+    var gpuChip = Context.Request.Query["gpuChip"].ToString();
 }
 
 <div class="container mt-4">
+    <!-- Breadcrumb -->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
-            <li class="breadcrumb-item active">Sản phẩm</li>
-            @if (selectedBrand != null)
-            {
-                <li class="breadcrumb-item active">@selectedBrand.Name</li>
-            }
+            <li class="breadcrumb-item active">Máy tính laptop</li>
         </ol>
     </nav>
 
     <div class="row">
-        <!-- Sidebar: Bộ lọc thương hiệu -->
+        <!-- ===== SIDEBAR TRÁI: BỘ LỌC ===== -->
         <div class="col-md-3">
             <div class="card shadow-sm mb-4">
                 <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0"><i class="fas fa-filter"></i> Thương hiệu</h5>
+                    <h5 class="mb-0"><i class="fas fa-filter"></i> Bộ lọc</h5>
                 </div>
-                <div class="card-body p-0">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item @(selectedBrand == null ? "active" : "")">
-                            <a href="/Products" class="text-decoration-none d-block @(selectedBrand == null ? "text-white" : "")">
-                                <i class="fas fa-list"></i> Tất cả sản phẩm
-                            </a>
-                        </li>
-                        @foreach (var brand in brands)
-                        {
-                            <li class="list-group-item @(selectedBrand?.Id == brand.Id ? "active" : "")">
-                                <a href="/Products?brandId=@brand.Id" class="text-decoration-none d-block @(selectedBrand?.Id == brand.Id ? "text-white" : "")">
-                                    @if (!string.IsNullOrEmpty(brand.LogoUrl))
-                                    {
-                                        <img src="@brand.LogoUrl" alt="@brand.Name" style="height: 20px; margin-right: 8px;" />
-                                    }
-                                    @brand.Name
-                                </a>
-                            </li>
-                        }
-                    </ul>
+                <div class="card-body">
+                    <!-- 1. KHOẢNG GIÁ -->
+                    <div class="filter-section mb-4">
+                        <h6 class="fw-bold mb-2"><i class="fas fa-dollar-sign"></i> Khoảng giá</h6>
+                        <form method="get" action="/Products" id="priceFilterForm">
+                            <div class="d-flex gap-2 align-items-center">
+                                <input type="number" name="minPrice" class="form-control form-control-sm" placeholder="0đ" value="@minPrice" />
+                                <span>—</span>
+                                <input type="number" name="maxPrice" class="form-control form-control-sm" placeholder="200.000.000đ" value="@maxPrice" />
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-sm w-100 mt-2">Áp dụng</button>
+                        </form>
+                    </div>
+
+                    <hr />
+
+                    <div class="filter-section mb-4">
+                        <h6 class="fw-bold mb-2"><i class="fas fa-memory"></i> RAM</h6>
+                        <form method="get" action="/Products">
+                            <input type="text" name="ram" class="form-control form-control-sm" placeholder="Ví dụ: 16GB hoặc 32GB" value="@ram" />
+                            <button type="submit" class="btn btn-primary btn-sm w-100 mt-2">Tìm theo RAM</button>
+                        </form>
+                    </div>
+
+                    <hr />
+
+                    <div class="filter-section mb-4">
+                        <h6 class="fw-bold mb-2"><i class="fas fa-microchip"></i> Chip VGA</h6>
+                        <form method="get" action="/Products">
+                            <input type="text" name="gpuChip" class="form-control form-control-sm" placeholder="Ví dụ: RTX 4060 hoặc Intel" value="@gpuChip" />
+                            <button type="submit" class="btn btn-primary btn-sm w-100 mt-2">Tìm theo VGA</button>
+                        </form>
+                    </div>
+
+                    <hr />
+
+                    <!-- 2. THƯƠNG HIỆU -->
+                    <div class="filter-section mb-4">
+                        <h6 class="fw-bold mb-2"><i class="fas fa-tag"></i> Thương hiệu</h6>
+                        <div class="brand-list">
+                            @foreach (var brand in brands.Take(4))
+                            {
+                                <div class="form-check">
+                                    <input class="form-check-input brand-checkbox" type="checkbox" value="@brand.Id" id="brand_@brand.Id" />
+                                    <label class="form-check-label" for="brand_@brand.Id">@brand.Name</label>
+                                </div>
+                            }
+                            <a href="#" class="text-primary text-decoration-none small" id="showMoreBrands">Xem thêm</a>
+                            <div id="moreBrands" style="display: none;">
+                                @foreach (var brand in brands.Skip(4))
+                                {
+                                    <div class="form-check">
+                                        <input class="form-check-input brand-checkbox" type="checkbox" value="@brand.Id" id="brand_@brand.Id" />
+                                        <label class="form-check-label" for="brand_@brand.Id">@brand.Name</label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <!-- 3. NHU CẦU SỬ DỤNG -->
+                    <div class="filter-section">
+                        <h6 class="fw-bold mb-2"><i class="fas fa-user"></i> Nhu cầu</h6>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="needGaming" />
+                            <label class="form-check-label" for="needGaming">Gaming</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="needOffice" />
+                            <label class="form-check-label" for="needOffice">Văn phòng</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="needBusiness" />
+                            <label class="form-check-label" for="needBusiness">Doanh nghiệp</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="needStudent" />
+                            <label class="form-check-label" for="needStudent">Sinh viên</label>
+                        </div>
+                        <a href="#" class="text-primary text-decoration-none small">Xem thêm</a>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Danh sách sản phẩm -->
+        <!-- ===== NỘI DUNG CHÍNH: DANH SÁCH SẢN PHẨM ===== -->
         <div class="col-md-9">
             @if (selectedBrand != null)
             {
@@ -67,7 +131,7 @@
                 <div class="alert alert-info text-center py-5">
                     <i class="fas fa-info-circle" style="font-size: 40px;"></i>
                     <h4 class="mt-2">Không có sản phẩm nào!</h4>
-                    <p class="text-muted">Hiện tại chưa có sản phẩm nào thuộc thương hiệu này.</p>
+                    <p class="text-muted">Hiện tại chưa có sản phẩm nào phù hợp.</p>
                     <a href="/Products" class="btn btn-primary">Xem tất cả sản phẩm</a>
                 </div>
             }
@@ -85,7 +149,6 @@
                                     <h6 class="card-title text-truncate fw-bold">@product.Name</h6>
                                     <p class="card-text text-muted small">@product.Brand?.Name</p>
 
-                                    <!-- Chip thông số -->
                                     @if (!string.IsNullOrEmpty(product.Specs))
                                     {
                                         var specs = product.Specs.Split('|');
@@ -124,21 +187,51 @@
         transform: translateY(-5px);
         box-shadow: 0 10px 20px rgba(0,0,0,0.12) !important;
     }
-    .list-group-item.active {
-        background-color: #4e73df;
-        border-color: #4e73df;
+    .filter-section .form-check {
+        padding-left: 1.8rem;
+        margin-bottom: 4px;
     }
-    .list-group-item.active a {
-        color: white !important;
+    .filter-section .form-check-input {
+        margin-left: -1.8rem;
     }
-    .list-group-item a {
+    .filter-section .form-check-label {
+        font-size: 0.9rem;
         color: #333;
-        text-decoration: none;
     }
-    .list-group-item a:hover {
-        color: #4e73df;
+    .filter-section .form-check-label:hover {
+        color: #0d6efd;
     }
-    .list-group-item.active a:hover {
-        color: white !important;
+    .filter-section .form-control-sm {
+        font-size: 0.8rem;
     }
 </style>
+
+<script>
+    // Xem thêm thương hiệu
+    document.getElementById('showMoreBrands').addEventListener('click', function(e) {
+        e.preventDefault();
+        var more = document.getElementById('moreBrands');
+        if (more.style.display === 'none') {
+            more.style.display = 'block';
+            this.textContent = 'Thu gọn';
+        } else {
+            more.style.display = 'none';
+            this.textContent = 'Xem thêm';
+        }
+    });
+
+    // Tự động submit khi chọn checkbox (lọc thương hiệu)
+    document.querySelectorAll('.brand-checkbox').forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            var selectedBrands = [];
+            document.querySelectorAll('.brand-checkbox:checked').forEach(function(cb) {
+                selectedBrands.push(cb.value);
+            });
+            if (selectedBrands.length > 0) {
+                window.location.href = '/Products?brandIds=' + selectedBrands.join(',');
+            } else {
+                window.location.href = '/Products';
+            }
+        });
+    });
+</script>

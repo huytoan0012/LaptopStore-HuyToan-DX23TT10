@@ -14,18 +14,35 @@ namespace LaptopStore.Controllers
             _context = context;
         }
 
-        // GET: /Products?brandId=1
-        public async Task<IActionResult> Index(int? brandId, string searchString)
+        // GET: /Products
+        public async Task<IActionResult> Index(int? brandId, string brandIds, int? minPrice, int? maxPrice, string searchString, string ram, string gpuChip)
         {
             var products = _context.Products
                 .Include(p => p.Brand)
                 .Where(p => p.IsActive);
 
-            // Lọc theo thương hiệu
+            // Lọc theo thương hiệu (1 brand - từ trang chủ)
             if (brandId.HasValue && brandId.Value > 0)
             {
                 products = products.Where(p => p.BrandId == brandId.Value);
                 ViewBag.SelectedBrand = await _context.Brands.FindAsync(brandId.Value);
+            }
+
+            // Lọc theo nhiều brand (từ checkbox trong sidebar)
+            if (!string.IsNullOrEmpty(brandIds))
+            {
+                var brandIdList = brandIds.Split(',').Select(int.Parse).ToList();
+                products = products.Where(p => brandIdList.Contains(p.BrandId));
+            }
+
+            // Lọc theo khoảng giá
+            if (minPrice.HasValue && minPrice.Value > 0)
+            {
+                products = products.Where(p => p.Price >= minPrice.Value);
+            }
+            if (maxPrice.HasValue && maxPrice.Value > 0)
+            {
+                products = products.Where(p => p.Price <= maxPrice.Value);
             }
 
             // Tìm kiếm theo tên
@@ -34,8 +51,23 @@ namespace LaptopStore.Controllers
                 products = products.Where(p => p.Name.Contains(searchString));
             }
 
-            var productList = await products.OrderByDescending(p => p.CreatedDate).ToListAsync();
+            if (!string.IsNullOrWhiteSpace(ram))
+            {
+                products = products.Where(p => p.Specs != null && p.Specs.Contains(ram));
+            }
+
+            if (!string.IsNullOrWhiteSpace(gpuChip))
+            {
+                products = products.Where(p => p.Specs != null && p.Specs.Contains(gpuChip));
+            }
+
+            var productList = await products
+                .OrderByDescending(p => p.CreatedDate)
+                .ToListAsync();
+
             ViewBag.Brands = await _context.Brands.ToListAsync();
+            ViewBag.MinPrice = minPrice;
+            ViewBag.MaxPrice = maxPrice;
 
             return View(productList);
         }
