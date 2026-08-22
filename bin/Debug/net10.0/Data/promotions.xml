@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<promotions>
+  <promotion>
+    <id>1</id>
+    <title>Giảm giá sinh viên</title>
+    <code>SINHVIEN2026</code>
+    <discountPercent>5</discountPercent>
+    <isActive>true</isActive>
+  </promotion>
+</promotions>

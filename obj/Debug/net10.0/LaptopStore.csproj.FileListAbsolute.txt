@@ -2,7 +2,6 @@ F:\ASP.NET\LaptopStore\bin\Debug\net10.0\appsettings.Development.json
 F:\ASP.NET\LaptopStore\bin\Debug\net10.0\appsettings.json
 F:\ASP.NET\LaptopStore\bin\Debug\net10.0\LaptopStore.staticwebassets.runtime.json
 F:\ASP.NET\LaptopStore\bin\Debug\net10.0\LaptopStore.staticwebassets.endpoints.json
-F:\ASP.NET\LaptopStore\bin\Debug\net10.0\LaptopStore.exe
 F:\ASP.NET\LaptopStore\bin\Debug\net10.0\LaptopStore.deps.json
 F:\ASP.NET\LaptopStore\bin\Debug\net10.0\LaptopStore.runtimeconfig.json
 F:\ASP.NET\LaptopStore\bin\Debug\net10.0\LaptopStore.dll
@@ -3947,3 +3946,5 @@ F:\ASP.NET\LaptopStore\Validation\HardwareFilterCheck\runtimes\osx-x64\native\ms
 F:\ASP.NET\LaptopStore\Validation\HardwareFilterCheck\runtimes\win-arm64\native\msalruntime_arm64.dll
 F:\ASP.NET\LaptopStore\Validation\HardwareFilterCheck\runtimes\win-x64\native\msalruntime.dll
 F:\ASP.NET\LaptopStore\Validation\HardwareFilterCheck\runtimes\win-x86\native\msalruntime_x86.dll
+F:\ASP.NET\LaptopStore\bin\Debug\net10.0\Data\promotions.xml
+F:\ASP.NET\LaptopStore\bin\Debug\net10.0\LaptopStore.exe

@@ -42,6 +42,8 @@ builder.Services.AddSession(options =>
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<IProductAdoService, ProductAdoService>();
+builder.Services.AddSingleton<XmlPromotionService>();
 
 var app = builder.Build();
 

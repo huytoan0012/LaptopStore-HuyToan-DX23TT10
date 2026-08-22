@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = Model.Name;
+    var brands = ViewBag.Brands as List<LaptopStore.Models.Brand> ?? new List<LaptopStore.Models.Brand>();
 }
 
 <div class="container mt-4">
@@ -13,17 +14,64 @@
     </nav>
 
     <div class="row">
-        <!-- Ảnh sản phẩm -->
-        <div class="col-md-5">
-            <div class="card shadow-sm border-0">
-                <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? "/images/no-image.jpg" : Model.ImageUrl)" 
-                     class="card-img-top p-3" alt="@Model.Name"
-                     style="height: 400px; object-fit: contain; background: #f8f9fa; border-radius: 12px;" />
-            </div>
-        </div>
+        <!-- SIDEBAR -->
+        <aside class="col-lg-3 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-bars"></i> Danh mục</h5>
+                </div>
+                <div class="card-body">
+                    <a href="/Products" class="d-block text-decoration-none mb-3">
+                        <i class="fas fa-laptop me-2"></i> Tất cả sản phẩm
+                    </a>
+                    <a href="/Products?brandId=@Model.BrandId" class="d-block text-decoration-none mb-3">
+                        <i class="fas fa-tag me-2"></i> @Model.Brand?.Name
+                    </a>
 
-        <!-- Thông tin sản phẩm -->
-        <div class="col-md-7">
+                    <hr />
+                    <h6 class="fw-bold mb-3"><i class="fas fa-filter me-2"></i> Lọc nhanh</h6>
+                    <form method="get" action="/Products" class="mb-2">
+                        <input type="text" name="ram" class="form-control form-control-sm" placeholder="RAM, ví dụ: 16GB" />
+                        <button type="submit" class="btn btn-outline-primary btn-sm w-100 mt-2">Tìm theo RAM</button>
+                    </form>
+                    <form method="get" action="/Products" class="mb-2">
+                        <input type="text" name="cpu" class="form-control form-control-sm" placeholder="CPU, ví dụ: Core i7" />
+                        <button type="submit" class="btn btn-outline-primary btn-sm w-100 mt-2">Tìm theo CPU</button>
+                    </form>
+                    <form method="get" action="/Products">
+                        <input type="text" name="gpuChip" class="form-control form-control-sm" placeholder="VGA, ví dụ: RTX 4060" />
+                        <button type="submit" class="btn btn-outline-primary btn-sm w-100 mt-2">Tìm theo VGA</button>
+                    </form>
+
+                    @if (brands.Any())
+                    {
+                        <hr />
+                        <h6 class="fw-bold mb-2"><i class="fas fa-tags me-2"></i> Thương hiệu</h6>
+                        @foreach (var brand in brands)
+                        {
+                            <a href="/Products?brandId=@brand.Id" class="d-block text-decoration-none small mb-2">
+                                @brand.Name
+                            </a>
+                        }
+                    }
+                </div>
+            </div>
+        </aside>
+
+        <!-- THÔNG TIN SẢN PHẨM -->
+        <main class="col-lg-9">
+            <div class="row">
+                <!-- Ảnh sản phẩm -->
+                <div class="col-md-5">
+                    <div class="card shadow-sm border-0">
+                        <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? "/images/no-image.jpg" : Model.ImageUrl)" 
+                             class="card-img-top p-3" alt="@Model.Name"
+                             style="height: 400px; object-fit: contain; background: #f8f9fa; border-radius: 12px;" />
+                    </div>
+                </div>
+
+                <!-- Thông tin sản phẩm -->
+                <div class="col-md-7">
             <h1 class="display-6 fw-bold">@Model.Name</h1>
             
             <div class="mb-2">
@@ -96,8 +144,8 @@
                     <i class="fas fa-arrow-left"></i> Quay lại
                 </a>
             </div>
-        </div>
-    </div>
+                </div>
+            </div>
 
     <!-- Sản phẩm cùng hãng -->
     @if (ViewBag.RelatedProducts != null && ((List<LaptopStore.Models.Product>)ViewBag.RelatedProducts).Any())
@@ -119,10 +167,10 @@
                                 {
                                     var specs = product.Specs.Split('|');
                                     <div class="mb-2">
-                                        @foreach (var spec in specs.Take(2))
+                                        @for (var specIndex = 0; specIndex < Math.Min(specs.Length, 2); specIndex++)
                                         {
                                             <span class="badge bg-light text-dark border me-1 mb-1 p-1 small">
-                                                @spec.Trim()
+                                                @specs[specIndex].Trim()
                                             </span>
                                         }
                                     </div>
@@ -137,6 +185,8 @@
             </div>
         </section>
     }
+        </main>
+    </div>
 </div>
 
 <script>

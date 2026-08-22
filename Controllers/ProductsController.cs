@@ -111,6 +111,7 @@ namespace LaptopStore.Controllers
                 .Take(4)
                 .ToListAsync();
 
+            ViewBag.Brands = await _context.Brands.ToListAsync();
             ViewBag.RelatedProducts = relatedProducts;
 
             return View(product);
