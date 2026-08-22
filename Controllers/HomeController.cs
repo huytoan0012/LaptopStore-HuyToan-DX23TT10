@@ -34,7 +34,7 @@ namespace LaptopStore
                     .Include(p => p.Brand)
                     .Where(p => p.IsActive)
                     .OrderByDescending(p => p.CreatedDate)
-                    .Take(8)
+                    .Take(20)
                     .ToListAsync(),
 
                 FeaturedProducts = await _context.Products

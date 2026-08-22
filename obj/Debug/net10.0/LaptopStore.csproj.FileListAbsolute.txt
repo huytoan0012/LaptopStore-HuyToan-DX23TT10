@@ -3075,7 +3075,6 @@ F:\ASP.NET\LaptopStore\Validation\SpecFilterCheck\runtimes\osx-x64\native\msalru
 F:\ASP.NET\LaptopStore\Validation\SpecFilterCheck\runtimes\win-arm64\native\msalruntime_arm64.dll
 F:\ASP.NET\LaptopStore\Validation\SpecFilterCheck\runtimes\win-x64\native\msalruntime.dll
 F:\ASP.NET\LaptopStore\Validation\SpecFilterCheck\runtimes\win-x86\native\msalruntime_x86.dll
-F:\ASP.NET\LaptopStore\obj\Debug\net10.0\compressed\hpnr3pd5be-{0}-qjnbbansz8-qjnbbansz8.gz
 F:\ASP.NET\LaptopStore\Validation\FloatingActionsCheck\appsettings.Development.json
 F:\ASP.NET\LaptopStore\Validation\FloatingActionsCheck\appsettings.json
 F:\ASP.NET\LaptopStore\Validation\FloatingActionsCheck\LaptopStore.staticwebassets.runtime.json
@@ -3948,3 +3947,4 @@ F:\ASP.NET\LaptopStore\Validation\HardwareFilterCheck\runtimes\win-x64\native\ms
 F:\ASP.NET\LaptopStore\Validation\HardwareFilterCheck\runtimes\win-x86\native\msalruntime_x86.dll
 F:\ASP.NET\LaptopStore\bin\Debug\net10.0\Data\promotions.xml
 F:\ASP.NET\LaptopStore\bin\Debug\net10.0\LaptopStore.exe
+F:\ASP.NET\LaptopStore\obj\Debug\net10.0\compressed\hpnr3pd5be-{0}-35yuo6mbs6-35yuo6mbs6.gz
